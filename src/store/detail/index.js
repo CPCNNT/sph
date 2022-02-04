@@ -1,7 +1,9 @@
 import { reqGetGoodsDetail, reqAddOrUpdateCart } from "@/api"
+import { getUUID } from '@/utils/uuid_token'
 
 const state = {
-  goodsDetail: {}
+  goodsDetail: {},
+  uuid_token: getUUID()
 }
 
 const mutations = {
@@ -39,9 +41,6 @@ const getters = {
   },
   price(state) {
     return state.goodsDetail.price || 0
-  },
-  valuesSkuJson(state) {
-    return state.goodsDetail.valuesSkuJson || ''
   }
 }
 

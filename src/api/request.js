@@ -16,6 +16,10 @@ const requests = axios.create({
 // 请求拦截器：再发请求之前，请求拦截器可以监测到，可以在请求发出之前执行一些任务
 requests.interceptors.request.use(config => {
   // config：配置对象，对象里的 headers 属性很重要
+  const uuid_token = localStorage.getItem('UUIDTOKEN')
+  if (uuid_token) {
+    config.headers.userTempId = uuid_token
+  }
   nprogress.start()  // 进度条开始
   return config
 })

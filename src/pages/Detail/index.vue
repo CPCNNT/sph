@@ -358,8 +358,7 @@
         "categoryView",
         "skuInfo",
         "spuSaleAttrList",
-        "price",
-        "valuesSkuJson",
+        "price"
       ]),
       skuImageList() {
         return this.skuInfo.skuImageList || [{}]
