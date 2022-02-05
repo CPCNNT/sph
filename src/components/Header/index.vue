@@ -5,10 +5,14 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <p v-if="!userName">
             <span>请</span>
             <router-link to="/login">登录</router-link>  <!-- 声明式导航务必要有 to 属性 -->
             <router-link class="register" to="/register">免费注册</router-link>
+          </p>
+          <p v-else>
+            <a>{{ userName }}</a>
+            <a class="register" @click="logout">退出登录</a>
           </p>
         </div>
         <div class="typeList">
@@ -72,6 +76,17 @@
           params: { keyword: this.keyword },
           query
         })
+      },
+      async logout() {
+        // 退出登录
+        // 1. 发请求，通知服务器退出登录（清除数据，如 token）
+        // 2. 清除项目中的数据，如 userInfo、token
+        try {
+          await this.$store.dispatch('userLogout')
+          this.$router.push('/home')
+        } catch (error) {
+          console.log(error.message)
+        }
       }
     },
     mounted() {
@@ -79,6 +94,11 @@
       this.$bus.$on('clearKeyword', () => {
         this.keyword = ''
       })
+    },
+    computed: {
+      userName() {
+        return this.$store.state.user.userInfo.loginName
+      }
     }
   }
 </script>

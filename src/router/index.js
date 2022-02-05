@@ -2,6 +2,7 @@
 
 import Vue from "vue"
 import VueRouter from 'vue-router'
+import store from '@/store'
 
 Vue.use(VueRouter)  // 使用插件
 
@@ -34,9 +35,38 @@ VueRouter.prototype.replace = function (destination, resolve, reject) {
 import routes from "./routes"
 
 // 配置路由
-export default new VueRouter({
+let router = new VueRouter({
   routes,
   scrollBehavior(to, from, savedPosition) {
     return { x: 0, y: 0 }  // y=0，代表滚动条在最上方
   }
 })
+
+// 全局前置守卫
+router.beforeEach(async (to, from, next) => {
+  let token = store.state.user.token
+  let name = store.state.user.userInfo.loginName
+  if (token) {
+    if (to.path === '/login') {
+      next('/home')
+    } else {
+      if (name) {
+        next()
+      } else {
+        try {
+          await store.dispatch('getUserInfo')
+          next()
+        } catch (error) {
+          // token 失效了，需重新登陆
+          // 清除 token
+          await store.dispatch('userLogout')
+          next('/login')
+        }
+      }
+    }
+  } else {
+    next()
+  }
+})
+
+export default router

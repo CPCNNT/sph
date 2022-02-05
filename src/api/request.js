@@ -4,6 +4,8 @@ import axios from "axios"
 import nprogress from 'nprogress'  // 引入进度条
 // start：进度条开始，done：进度条结束
 import "nprogress/nprogress.css"  // 引入进度条样式
+import store from "@/store"
+// import { setToken, getToken } from "@/utils/token"
 
 // 1. 利用 axios 对象的方法 create，去创建一个 axios 实例
 // 2. request 就是 axios，只不过稍微配置一下
@@ -20,6 +22,17 @@ requests.interceptors.request.use(config => {
   if (uuid_token) {
     config.headers.userTempId = uuid_token
   }
+  // 需要将 token 带给服务器
+  // 自己的实现
+  // if (getToken() && store.state.user.token && getToken() != store.state.user.token) {
+  //   setToken(store.state.user.token)
+  // }
+  // config.headers.token = getToken()
+  // 标准的实现
+  if (store.state.user.token) {
+    config.headers.token = store.state.user.token
+  }
+
   nprogress.start()  // 进度条开始
   return config
 })
