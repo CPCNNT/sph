@@ -28,7 +28,7 @@
         <span class="error-msg">错误提示信息</span>
       </div>
       <div class="controls">
-        <input name="m1" type="checkbox" :checked="agree">
+        <input name="m1" type="checkbox" v-model="agree">
         <span>同意协议并注册《尚品汇用户协议》</span>
         <span class="error-msg">错误提示信息</span>
       </div>
@@ -65,7 +65,7 @@
         code: '',
         password: '',
         password1: '',
-        agree: true
+        agree: false
       }
     },
     methods: {
