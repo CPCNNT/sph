@@ -16,12 +16,16 @@ import store from '@/store'  // 引入仓库
 
 import '@/mock/mockServe'
 
+// 统一引入 api 中的所有接口
+import * as API from '@/api'
+
 Vue.config.productionTip = false
 
 new Vue({
   render: h => h(App),
   beforeCreate() {  // 全局事件总线 $bus 配置
     Vue.prototype.$bus = this
+    Vue.prototype.$API = API
   },
   router,  // 注册路由
   store  // 注册仓库，组件实例会增加 $store 属性

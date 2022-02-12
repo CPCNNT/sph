@@ -1,5 +1,6 @@
 // 统一管理 API
 
+
 import requests from './request'
 import mockRequests from './mockRequest'
 
@@ -54,3 +55,9 @@ export const reqAddressInfo = () => requests({ url: '/user/userAddress/auth/find
 
 // 获取商品清单
 export const reqOrderInfo = () => requests({ url: '/order/auth/trade', method: 'get' })
+
+// 提交订单接口
+export const reqSubmitOrder = (tradeNo, data) => requests({ url: `/order/auth/submitOrder?tradeNo=${tradeNo}`, data, method: 'post' })
+
+// 获取支付信息接口
+export const reqPayInfo = orderId => requests({ url: `/payment/weixin/createNative/${orderId}`, method: 'get' })

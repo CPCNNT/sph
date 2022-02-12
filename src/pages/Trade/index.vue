@@ -81,7 +81,7 @@
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+      <a class="subBtn" @click="submitOrder">提交订单</a>
     </div>
   </div>
 </template>
@@ -93,7 +93,8 @@
     name: 'Trade',
     data() {
       return {
-        msg: ''
+        msg: '',
+        orderId: ''
       }
     },
     mounted() {
@@ -110,7 +111,8 @@
       },
       totalNum() {
         let sum = 0
-        this.orderInfo.detailArrayList.forEach(item => {
+        const detailArrayList = this.orderInfo.detailArrayList || []
+        detailArrayList.forEach(item => {
           sum += item.skuNum
         })
         return sum
@@ -120,6 +122,24 @@
       changeDefault(address, addressInfo) {
         addressInfo.forEach(item => item.isDefault = '0')
         address.isDefault = '1'
+      },
+      async submitOrder() {
+        let { tradeNo } = this.orderInfo
+        let data = {
+          "consignee": this.defaultAddress.consignee,
+          "consigneeTel": this.defaultAddress.phoneNum,
+          "deliveryAddress": this.defaultAddress.fullAddress,
+          "paymentWay": "ONLINE",
+          "orderComment": this.msg.trim(),
+          "orderDetailList": this.orderInfo.detailArrayList
+        }
+        let result = await this.$API.reqSubmitOrder(tradeNo, data)
+        if (result.code === 200) {
+          this.orderId = result.data
+          this.$router.push(`/pay?orderId=${ this.orderId }`)
+        } else {
+          alert(result.data)
+        }
       }
     }
   }
