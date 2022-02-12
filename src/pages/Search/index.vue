@@ -135,7 +135,7 @@
         this.searchParams.category2Id = undefined
         this.searchParams.category3Id = undefined
         this.getSearchData()
-        // 地址栏也许要改，进行路由自跳转
+        // 地址栏也需要改，进行路由自跳转
         if (this.$route.params) {
           this.$router.push({ name: 'search', params: this.$route.params })
         }
