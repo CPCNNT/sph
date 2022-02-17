@@ -1,13 +1,22 @@
-// 引入路由组件
-import Home from '@/pages/Home'
-import Search from '@/pages/Search'
-import Login from '@/pages/Login'
-import Register from '@/pages/Register'
-import Detail from '@/pages/Detail'
-import AddCartSuccess from '@/pages/AddCartSuccess'
-import ShopCart from '@/pages/ShopCart'
-import Trade from '@/pages/Trade'
-import Pay from '@/pages/Pay'
+// 引入一级路由组件
+const Home = () => import('@/pages/Home') 
+const Search = () => import('@/pages/Search')
+const Login = () => import('@/pages/Login')
+const Register = () => import('@/pages/Register')
+const Detail = () => import('@/pages/Detail')
+const AddCartSuccess = () => import('@/pages/AddCartSuccess')
+const ShopCart = () => import('@/pages/ShopCart')
+const Trade = () => import('@/pages/Trade')
+const Pay = () => import('@/pages/Pay')
+const PaySuccess = () => import('@/pages/PaySuccess')
+const Center = () => import('@/pages/Center')
+// 引入二级路由组件
+const MyOrder = () => import('@/pages/Center/myOrder')
+const GroupOrder = () => import('@/pages/Center/groupOrder')
+
+/* 当打包构建应用时，JavaScript 包会变得非常大，影响页面加载。
+如果我们能把不同路由对应的组件分割成不同的代码块，
+然后当路由被访问的时候才加载对应组件，这样就更加高效了。 */
 
 export default [
   {
@@ -62,11 +71,50 @@ export default [
   {
     path: "/trade",
     component: Trade,
-    meta: { showFooter: true }
+    meta: { showFooter: true },
+    beforeEnter: (to, from, next) => {  // 独享路由守卫
+      if (from.path === '/shopcart') {
+        next();
+      } else {
+        next(false);
+      }
+    }
   },
   {
     path: "/pay",
     component: Pay,
+    meta: { showFooter: true },
+    beforeEnter: (to, from, next) => {  // 独享路由守卫
+      if (from.path === '/trade') {
+        next();
+      } else {
+        next(false);
+      }
+    }
+  },
+  {
+    path: "/paysuccess",
+    component: PaySuccess,
     meta: { showFooter: true }
+  },
+  {
+    path: "/center",
+    component: Center,
+    meta: { showFooter: true },
+    // 二级路由组件
+    children: [
+      {
+        path: 'myorder',
+        component: MyOrder
+      },
+      {
+        path: 'grouporder',
+        component: GroupOrder
+      },
+      {
+        path: '/center',
+        redirect: '/center/myorder'
+      }
+    ]
   }
 ]

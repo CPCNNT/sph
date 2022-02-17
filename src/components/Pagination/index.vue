@@ -10,7 +10,7 @@
     <button v-if="startNumAndEndNum.end < totalPage" @click="$emit('getPageNo', totalPage)">{{ totalPage }}</button>
     <button :disabled="pageNo === totalPage" @click="$emit('getPageNo', pageNo + 1)">下一页</button>
     
-    <button style="margin-left: 30px">共 {{ total }} 条</button>
+    <span style="margin-left: 30px">共 {{ total }} 条</span>
   </div>
 </template>
 
@@ -86,6 +86,24 @@
         background-color: #409eff;
         color: #fff;
       }
+    }
+
+    span {
+      margin: 0 5px;
+      background-color: #f4f4f5;
+      color: #606266;
+      outline: none;
+      border-radius: 2px;
+      padding: 0 4px;
+      vertical-align: top;
+      display: inline-block;
+      font-size: 13px;
+      min-width: 35.5px;
+      height: 28px;
+      line-height: 28px;
+      box-sizing: border-box;
+      text-align: center;
+      border: 0;
     }
   }
 </style>

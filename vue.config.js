@@ -8,5 +8,6 @@ module.exports = {
       }
     },
     open: true
-  }
+  },
+  productionSourceMap: false  // 去除 build 时生成的 map 文件
 }
