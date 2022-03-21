@@ -7,19 +7,35 @@
         <transition name="fade">
           <div class="sort" v-show="show">
             <div class="all-sort-list2" @click="goSearch">
-              <div class="item" v-for="c1 in categoryList" :key="c1.categoryId" :class="{ cur: currentId === c1.categoryId }">
+              <div
+                class="item"
+                v-for="c1 in categoryList"
+                :key="c1.categoryId"
+                :class="{ cur: currentId === c1.categoryId }"
+              >
                 <h3 @mouseenter="changeId(c1.categoryId)">
                   <a :data-category1id="c1.categoryId">{{ c1.categoryName }}</a>
                 </h3>
-                <div class="item-list clearfix" v-show="currentId === c1.categoryId">
-                  <div class="subitem" v-for="c2 in c1.categoryChild" :key="c2.categoryId">
+                <div
+                  class="item-list clearfix"
+                  v-show="currentId === c1.categoryId"
+                >
+                  <div
+                    class="subitem"
+                    v-for="c2 in c1.categoryChild"
+                    :key="c2.categoryId"
+                  >
                     <dl class="fore">
                       <dt>
-                        <a :data-category2id="c2.categoryId">{{ c2.categoryName }}</a>
+                        <a :data-category2id="c2.categoryId">{{
+                          c2.categoryName
+                        }}</a>
                       </dt>
                       <dd>
                         <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
-                          <a :data-category3id="c3.categoryId">{{ c3.categoryName }}</a>
+                          <a :data-category3id="c3.categoryId">{{
+                            c3.categoryName
+                          }}</a>
                         </em>
                       </dd>
                     </dl>
@@ -45,8 +61,8 @@
 </template>
 
 <script>
-  import { mapState } from "vuex"
-  import throttle from "lodash/throttle" // 按需引入
+  import { mapState } from "vuex";
+  import throttle from "lodash/throttle"; // 按需引入
 
   export default {
     name: "TypeNav",
@@ -54,56 +70,56 @@
       return {
         currentId: -1,
         show: true,
-      }
+      };
     },
     computed: {
-      ...mapState({ 
-        categoryList: state => state.home.categoryList,
-      })
+      ...mapState({
+        categoryList: (state) => state.home.categoryList,
+      }),
     },
     methods: {
       changeId: throttle(function (id) {
-        this.currentId = id
+        this.currentId = id;
       }, 100),
       leave() {
-        this.currentId = -1
+        this.currentId = -1;
         if (this.$route.path != "/home") {
-          this.show = false
+          this.show = false;
         }
       },
       goSearch(event) {
-        let element = event.target
+        let element = event.target;
         if (element.tagName === "A") {
-          let query = { categoryName: element.textContent }
-          let { category1id, category2id, category3id } = element.dataset
+          let query = { categoryName: element.textContent };
+          let { category1id, category2id, category3id } = element.dataset;
           if (category1id) {
-            query.category1Id = category1id
+            query.category1Id = category1id;
           } else if (category2id) {
-            query.category2Id = category2id
+            query.category2Id = category2id;
           } else if (category3id) {
-            query.category3Id = category3id
+            query.category3Id = category3id;
           }
-          let params = {}
+          let params = {};
           if (this.$route.params) {
-            params = this.$route.params
+            params = this.$route.params;
           }
           this.$router.push({
             name: "search",
             query,
-            params
-          })
+            params,
+          });
         }
       },
       enterShow() {
         this.show = true;
-      }
+      },
     },
     mounted() {
       if (this.$route.path != "/home") {
-        this.show = false
+        this.show = false;
       }
     },
-  }
+  };
 </script>
 
 <style lang="less" scoped>
@@ -128,7 +144,7 @@
       }
 
       .fade-enter-active {
-        transition: all .5s linear;
+        transition: all 0.5s linear;
       }
       .fade-enter {
         opacity: 0;
